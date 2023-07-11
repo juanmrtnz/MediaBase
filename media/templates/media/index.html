@@ -1,0 +1,33 @@
+{% extends "media/layout.html" %}
+
+{% block header %}
+    <div class="pageHeader" id="index-pageHeader">
+        Welcome to MediaBase!
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div id="index-pageExplanation">
+        <p>
+            Here you can keep track of all the <a href="{% url 'videogames_view' %}">video games</a>, <a href="{% url 'films_view' %}">films</a>,
+            <a href="{% url 'series_view' %}">series</a> and <a href="{% url 'books_view' %}">books</a> that you love. Even of your 
+            <a href="{% url 'collection_view' %}">video game collection</a>, if you're one of those! (one of us).
+        </p>
+
+        <p>
+            Just click on one of these blue words or go to the navigation bar at the top to choose a type of media, then add any item you like to 
+            the form and submit it to see it displayed in the table below! You can then edit the item or delete it using the buttons at the end of the row.
+        </p>
+            Also, you can add multiple items at once if you click the arrow on the left of the "Title" field of the form; then each new line  you write will 
+            be added as a different item. Be wary that if you add additional fields (like genre and release date) while inputing several items at the 
+            same time, each added item will contain those same fields.
+        </p>
+        <p>
+            If you'd like to save all the information of a table for personal reasons (I won't ask which ones), click on the Download button in the top right
+            corner of that table to save it as a text document (virus free, I swear).
+        </p>
+        <p>
+            I hope you like it!
+        </p>
+    </div>
+{% endblock %}

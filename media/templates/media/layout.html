@@ -1,0 +1,301 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}MediaBase{% endblock %}</title>
+        <link href="{% static 'media/styles.css' %}" rel="stylesheet">
+        <link rel="shortcut icon" type="image/png" href="{% static 'media/icons/favicon_media.png' %}">
+        <script src="{% static 'media/script.js' %}"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+
+        <nav id="navbar">
+                <a id="navbar-media" href="{% url 'index' %}">MediaBase</a>
+                <a id="navbar-videogames" class="navbar-link" href="{% url 'videogames_view' %}">Video games</a>
+                <a id="navbar-films" class="navbar-link" href="{% url 'films_view' %}">Films</a>
+                <a id="navbar-series" class="navbar-link" href="{% url 'series_view' %}">Series</a>
+                <a id="navbar-books" class="navbar-link" href="{% url 'books_view' %}">Books</a>
+                <a id="navbar-collection" class="navbar-link" href="{% url 'collection_view' %}">Game collection</a>
+
+                <div id="navbar-logLinks">
+                    {% if user.is_authenticated %}
+                        <div id="navbar-username" class="navbar-logLink">{{request.user.username}}</div>
+                        <a id="navbar-logout" class="navbar-logLink" href="{% url 'logout' %}">Log out</a>
+                    {% else %}
+                        <a id="navbar-login" class="navbar-logLink" href="{% url 'login' %}">Log in</a>
+                        <a id="navbar-register" class="navbar-logLink" href="{% url 'register' %}">Register</a>
+                    {% endif %}
+                </div>
+            </nav>
+
+        <div id="blockBody">
+
+            {% block header %}
+            {% endblock %}
+
+            {% block body %}
+                <form id="form" method="post" action="{% block post_action %}{% endblock %}">
+                    {% csrf_token %}
+                    <div id="form-sections">
+                        <div>
+                            <div id="form-section1">
+                                <div id="form-toggleIconDown" class="form-toggleIcon" style="display:block"></div>
+                                <div id="form-toggleIconUp" class="form-toggleIcon" style="display:none"></div>
+                                <input type="button" id="form-toggleButtonOff" class="form-toggleButton" style="display:block;" onclick="changeToTextarea()">
+                                <input type="button" id="form-toggleButtonOn" class="form-toggleButton" style="display:none;" disabled onclick="changeToTitle()">
+                                <div class="form-div">
+                                    <div id="form-title-title">
+                                        Title
+                                    </div>
+                                    <input required type="text" name="title" id="form-title" class="form-input" maxlength="200" style="display:block;">
+                                    <input type="text" id="form-title-hidden" class="form-input" style="display:none;">
+                                    <textarea name="multiple_titles" id="form-textarea" class="form-input" style="display:none;" rows="10" columns="20"></textarea>
+                                    <textarea id="form-textarea-hidden" class="form-input" style="display:none;" rows="10" columns="20"></textarea>
+                                </div>
+                                <div class="form-div" id="form-status-div">
+                                    {% block status %}                                    
+                                    {% endblock %}
+                                </div>
+                            </div>
+                    
+                            <div id="form-section2">
+                                {% block releaseDate %}
+                                    <div class="form-div" id="form-releaseDate-div">
+                                        Release date
+                                        <input type="date" name="release_date" id="form-releaseDate" class="form-input" max="2099-12-31">
+                                        <input type="number" name="release_year" id="form-releaseYear" class="form-input" max="2099" placeholder="Only the year">
+                                    </div>                            
+                                {% endblock %}
+
+                                {% block genre_subgenre %}                                    
+                                {% endblock %}
+
+                                <div id="block-platform_series_genre2_author_language">
+                                    {% block platform_series_genre2_author_language %}
+                                    {% endblock %}
+                                </div>
+
+                                {% block finishedDate %}
+                                    <div class="form-div" id="form-finishedDate-div">
+                                        {% block form_finishedHeader %}{% endblock %}
+                                        <textarea name="finished_date" id="form-finishedDate" class="form-input"></textarea>
+                                    </div>
+                                {% endblock %}
+                            </div>
+                        </div>
+
+                        <div id="form-section3">
+                            {% block statusCollection %}                                    
+                            {% endblock %}
+
+                            <div class="form-div">
+                                Notes
+                                <textarea name="notes" id="form-notes" class="form-input" placeholder="Any additional information" maxlength="600"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    
+                    <div id="form-buttons-div">
+                        <input id="form-stopEditingButton" value="Cancel editing" type="button" style="display:none" onclick="stopEditing()"º>
+                        <input id="form-submitButton" value="Add item" type="submit">  
+                    </div>
+
+                </form>
+
+                <div id="tableTop">
+                    {% block count %}
+                        {{items_count}} items
+                    {% endblock %}
+
+                    {% block download_button %}
+                    {% endblock %}
+                </div>
+
+
+                {% block table %}
+                    <table>
+                        
+                        <tr>
+                            <th id="table-titleHeader">Title</th>
+
+                            {% if media != 'collection' %}
+                                <th class="table-releaseDate">Release date</th>
+                                <th class="table-genre">Genre</th>
+                            {% endif %}
+
+                            {% if media == 'videogames' %}
+                                <th class="table-subgenre">Subgenre</th>
+                            {% endif %}
+                            {% if media == 'videogames' or media == 'collection' %}
+                                <th class="table-platform">Platform</th>
+                            {% endif %}
+                            {% if media == 'videogames' %}
+                                <th class="table-series">Series</th>
+                            {% endif %}
+                            {% if media == 'books' %}
+                                <th class="table-author">Author</th>
+                            {% endif %}
+                            {% if media == 'books' %}
+                                <th class="table-language">Language</th>
+                            {% endif %}
+
+                            {% if media != 'collection' %}
+                                <th class="table-finishedDate">{% block table_finishedHeader %}{% endblock %}</th>
+                            {% endif %}
+
+                            <th id="table-notesHeader">Notes</th>
+                            <th class="table-buttons"></th>
+                        </tr>
+                
+                        {% for item in items %}
+                            
+                            {% if item.status == 'Finished' %}
+                                <tr id="table-{{item.id}}-row" class="table-row-finished" ondblclick="openRow('{{item.id}}')">
+                            {% elif item.status == 'Plan to finish' %}
+                                <tr id="table-{{item.id}}-row" class="table-row-planToFinish" ondblclick="openRow('{{item.id}}')">
+                            {% elif item.status == 'Ongoing' %}
+                                <tr id="table-{{item.id}}-row" class="table-row-ongoing" ondblclick="openRow('{{item.id}}')">
+                            {% elif item.status == 'Dropped' %}
+                                <tr id="table-{{item.id}}-row" class="table-row-dropped" ondblclick="openRow('{{item.id}}')">
+                            {% elif item.status == 'No status' %}
+                                <tr id="table-{{item.id}}-row" class="table-row-noStatus" ondblclick="openRow('{{item.id}}')">
+                            {% endif %}
+    
+                                <td class="table-title" id="item-{{item.id}}-title">
+                                    {{item.title}}
+                                </td>
+                                
+                                {% if media != 'collection' %}
+                                
+                                    {% if item.release_date %}
+                                        {% if item.release_year_only == False %}
+                                            <td class="table-releaseDate" id="item-{{item.id}}-releaseDate">{{item.release_date|date:"j–n–Y"}}</td>
+                                        {% else %}
+                                            <td class="table-releaseDate" id="item-{{item.id}}-releaseDate">{{item.release_date|date:"Y"}}</td>
+                                        {% endif %}
+                                    {% else %}
+                                        <td class="table-releaseDate" id="item-{{item.id}}-releaseDate"></td>
+                                    {% endif %}
+                    
+                                    {% if item.genre_2 %}
+                                        <td class="table-genres" id="item-{{item.id}}-genres">{{item.genre}}, {{item.genre_2}}</td>
+                                    {% elif item.genre %}
+                                        <td class="table-genre" id="item-{{item.id}}-genre">{{item.genre}}</td>
+                                    {% else %}
+                                        <td class="table-genre" id="item-{{item.id}}-genre"></td>
+                                    {% endif %}
+
+                                    {% if media == 'videogames' %}
+                                        {% if item.subgenre %}
+                                            <td class="table-subgenre" id="item-{{item.id}}-subgenre">{{item.subgenre}}</td>
+                                        {% else %}
+                                            <td class="table-subgenre" id="item-{{item.id}}-subgenre"></td>
+                                        {% endif %}
+
+                                        <td class="table-platform" id="item-{{item.id}}-platform">
+                                            {% for platf in item.platform %}
+                                                {% if item.platform|length == 1 %}
+                                                    {{ platf }}
+                                                {% elif item.platform|length > 1 %}
+                                                    {% if platf == item.platform|last %}    
+                                                        {{ platf }}
+                                                    {% else %}
+                                                        {{ platf }}, 
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+
+                                        {% if item.series %}
+                                            <td class="table-series" id="item-{{item.id}}-series">{{item.series}}</td>
+                                        {% else %}
+                                            <td class="table-series" id="item-{{item.id}}-series"></td>
+                                        {% endif %}                                    
+                                    {% endif %}
+
+                                    {% if media == 'books' %}
+                                        {% if item.author %}
+                                            <td class="table-author" id="item-{{item.id}}-author">{{item.author}}</td>
+                                        {% else %}
+                                            <td class="table-author" id="item-{{item.id}}-author"></td>
+                                        {% endif %}
+
+                                        <td class="table-language" id="item-{{item.id}}-language">
+                                            {% for lang in item.language %}
+                                                {% if item.language|length == 1 %}
+                                                    {{ lang }}
+                                                {% elif item.language|length > 1 %}
+                                                    {% if lang == item.language|last %}    
+                                                        {{ lang }}
+                                                    {% else %}
+                                                        {{ lang }}, 
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                    {% endif %}
+
+                                    <td class="table-finishedDate" id="item-{{item.id}}-finishedDate">
+                                        {% for year in item.finished_date %}
+                                            {% if item.finished_date|length == 1 %}
+                                                {{ year }}
+                                            {% elif item.finished_date|length > 1 %}
+                                                {% if year == item.finished_date|last %}    
+                                                    {{ year }}
+                                                {% else %}
+                                                    {{ year }}, 
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                    
+                                {% else %}
+                                    {% if item.platform %}
+                                        <td class="table-platform" id="item-{{item.id}}-platform">{{item.platform}}</td>
+                                    {% else %}
+                                        <td class="table-platform" id="item-{{item.id}}-platform"></td>
+                                    {% endif %}
+                                {% endif %}
+                
+                                {% if item.notes %}
+                                    <td class="table-notes" id="item-{{item.id}}-notes">{{item.notes}}</td>
+                                {% else %}
+                                    <td class="table-notes" id="item-{{item.id}}-notes"></td>
+                                {% endif %}
+
+                                <td class="table-buttons" id="table-{{item.id}}-buttons">
+                                    <div class="table-editButton" onclick="editRow('{{item.id}}')"></div>
+                                    <div class="table-deleteButton" onclick="deleteRow('{{item.id}}')"></div>
+                                </td>
+                                
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="100%">This table is empty &mdash; Add some items to have them displayed here</td>
+                            </tr>
+                        {% endfor %}
+                
+                    </table>
+                {% endblock %}
+
+            {% endblock %}
+        </div>
+
+        <div id="deleteWarning-container" style="display:none;">
+            <div id="deleteWarning-div">
+                <div id="deleteWarning-header">Delete confirmation</div>
+                <div id="deleteWarning-message"></div>
+                <hr>
+                <div id="deleteWarning-buttons">
+                    <input type="button" value="Cancel" id="deleteWarning-noButton">
+                    <input type="button" value="Delete" id="deleteWarning-yesButton">
+                </div>
+            </div>
+        </div>
+    
+    </body>
+</html>

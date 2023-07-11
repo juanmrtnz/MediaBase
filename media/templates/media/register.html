@@ -1,0 +1,38 @@
+{% extends "media/layout.html" %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
+
+    <form id="logForm" action="{% url 'register' %}" method="post">
+        <div id="logHeader">
+            Register
+        </div>
+        {% csrf_token %}
+        <div>
+            <input required maxlength="15" class="logForm-textbox" type="text" name="username" placeholder="Username">
+        </div>
+        <div>
+            <input class="logForm-textbox" type="email" name="email" placeholder="Email address">
+        </div>
+        <div>
+            <input required class="logForm-textbox" type="password" name="password" placeholder="Password">
+        </div>
+        <div>
+            <input required class="logForm-textbox" type="password" name="confirmation" placeholder="Confirm password">
+        </div>
+        {% if message %}
+            <div id="log-errorMessage">
+                {{ message }}
+            </div>
+        {% endif %}
+        <input id="logForm-button" type="submit" value="Register">
+        <div>
+            Already have an account? <a href="{% url 'login' %}">Log in here</a>.
+        </div>
+    </form>
+
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "media/layout.html" %}
+
+{% block header %}
+    <div id="seriesHeader" class="pageHeader">
+        Series
+    </div>
+{% endblock %}
+
+{% block post_action %}
+    post/series/new
+{% endblock %}
+
+{% block status %}
+
+    Status
+    <fieldset id="form-status">
+        <input type="radio" id="form-status-finished" name="status" value="Finished" checked>
+        <label for="form-status-finished">Watched</label>
+        <input type="radio" id="form-status-planToFinish" name="status" value="Plan to finish">
+        <label for="form-status-planToFinish">Plan to watch</label>
+        <input type="radio" id="form-status-ongoing" name="status" value="Ongoing">
+        <label for="form-status-ongoing">Watching</label>
+        <input type="radio" id="form-status-dropped" name="status" value="Dropped">
+        <label for="form-status-dropped">Dropped</label>
+    </fieldset>
+
+{% endblock %}
+
+{% block genre_subgenre %}
+
+
+    <div class="form-div" id="form-genre-div">
+        Genre 1
+        <select type="select" name="genre" id="form-genre" class="form-input">
+            <option selected value="-"></option>
+            <option value="Action">Action</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Animation">Animation</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Crime">Crime</option>
+            <option value="Documentary">Documentary</option>
+            <option value="Drama">Drama</option>
+            <option value="Non-fiction">Non-fiction</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Historical">Historical</option>
+            <option value="Horror">Horror</option>
+            <option value="Musical">Musical</option>
+            <option value="Mystery">Mystery</option>
+            <option value="Romance">Romance</option>
+            <option value="Sitcom">Sitcom</option>
+            <option value="Soap opera">Soap opera</option>
+            <option value="Science fiction">Science fiction</option>
+            <option value="Sports">Sports</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Variety show">Variety show</option>
+            <option value="War">War</option>
+            <option value="Western">Western</option>
+            <option value="Other">Other</option>
+        </select>
+    </div>
+
+{% endblock %}
+
+{% block platform_series_genre2_author_language %}
+
+    <div class="form-div" id="form-genre2-div">
+        Genre 2
+        <select type="select" name="genre2" id="form-genre2" class="form-input">
+            <option selected value="-"></option>
+            <option value="Action">Action</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Animation">Animation</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Crime">Crime</option>
+            <option value="Documentary">Documentary</option>
+            <option value="Drama">Drama</option>
+            <option value="Non-fiction">Non-fiction</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Historical">Historical</option>
+            <option value="Horror">Horror</option>
+            <option value="Musical">Musical</option>
+            <option value="Mystery">Mystery</option>
+            <option value="Romance">Romance</option>
+            <option value="Sitcom">Sitcom</option>
+            <option value="Soap opera">Soap opera</option>
+            <option value="Science fiction">Science fiction</option>
+            <option value="Sports">Sports</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Variety show">Variety show</option>
+            <option value="War">War</option>
+            <option value="Western">Western</option>
+            <option value="Other">Other</option>
+
+        </select>
+    </div>
+
+{% endblock %}
+
+{% block form_finishedHeader %}Watched date{% endblock %}
+
+{% block download_button %}
+    <a class="tableTop-downloadButton" href="{% url 'download' 'series' %}">Download</a>
+{% endblock %}
+
+{% block table_finishedHeader %}Watched date{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "media/layout.html" %}
+
+{% block header %}
+    <div id="collectionHeader" class="pageHeader">
+        Game collection
+    </div>
+{% endblock %}
+
+{% block post_action %}
+    post/collection/new
+{% endblock %}
+
+{% block status_fieldset %}
+{% endblock %}
+
+{% block releaseDate %}
+{% endblock %}
+
+{% block platform_series_genre2_author_language %}
+
+    <div id="form-platform-div-collection" class="form-div">
+        Platform
+        <input type="text" name="platform" id="form-platform" class="form-input" maxlength="40">
+    </div>
+
+{% endblock %}
+
+{% block finishedDate %}
+{% endblock %}
+
+{% block statusCollection %}
+
+    <div class="form-div" id="form-status-div-collection">
+        Status
+        <fieldset id="form-status-collection">
+            <input type="radio" id="form-status-finished" name="status" value="Finished" checked>
+            <label for="form-status-finished">Finished</label>
+            <input type="radio" id="form-status-planToFinish" name="status" value="Plan to finish">
+            <label for="form-status-planToFinish">Plan to play</label>
+            <input type="radio" id="form-status-ongoing" name="status" value="Ongoing">
+            <label for="form-status-ongoing">Playing</label>
+            <div class="form-status-collection-2ndRow">
+                <input type="radio" id="form-status-dropped" name="status" value="Dropped">
+                <label for="form-status-dropped">Dropped</label>
+                <input type="radio" id="form-status-noStatus" name="status" value="No status">
+                <label for="form-status-noStatus">No status</label>
+            </div>
+        </fieldset>
+    </div>
+
+{% endblock %}
+
+{% block count %}
+    {{items_count}} games, {{finished}} finished
+{% endblock %}
+
+{% block download_button %}
+    <a class="tableTop-downloadButton" href="{% url 'download' 'collection' %}">Download</a>
+{% endblock %}
